@@ -70,7 +70,21 @@ module "eks_workers" {
 
 }
 
-
-
-
+module "route53" {
+  source  = "git::git@github.com:Greg215/terraform-demo-vg.git//route53-records?ref=main"
+  zone_id = "Z07374591FC76OBQXEXUL"
+  type    = "CNAME"
+  records = [
+    {
+      NAME   = "felicia.training.visiontech.com.sg"
+      RECORD = module.network_loadbalancer.dns_name
+      TTL    = "300"
+    },
+    {
+      NAME   = "hazelcast-felicia.training.visiontech.com.sg"
+      RECORD = module.network_loadbalancer.dns_name
+      TTL    = "300"
+    },
+  ]
+}
 
