@@ -100,6 +100,11 @@ module "route53" {
       RECORD = module.network_loadbalancer.dns_name
       TTL    = "300"
     },
+{
+	NAME = "jenkins-felicia.training.visiontech.com.sg"
+	RECORD = module.network_loadbalancer.dns_name
+	TTL = "300"
+}
   ]
 }
 
