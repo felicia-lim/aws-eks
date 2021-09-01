@@ -30,6 +30,9 @@ podTemplate(label: label, containers: [
                 stage('Terraform plan') {
                     sh 'terraform plan -out=tfplan -input=false'
                 }
+                stage('Terraform apply') {
+                    sh 'terraform apply -input=false tfplan'
+                }
             }
         }
     }
