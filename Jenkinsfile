@@ -8,7 +8,7 @@ properties([parameters([
 
 podTemplate(label: label, containers: [
         containerTemplate(name: 'jenkins-agent',
-                image: "hashicorp/terraform:${env.terraform_version}",
+                image: "greghu/terraform-0.12.31:latest",
                 ttyEnabled: true,
                 command: 'cat')
 ]) {
@@ -21,23 +21,34 @@ podTemplate(label: label, containers: [
                 stage('Checkout') {
                     checkout scm
                 }
-                // stage('Terraform init') {
-                //     sh 'terraform init -input=false'
-                // }
-                // stage('Terraform validate') {
-                //     sh 'terraform validate'
-                // }
-                // stage('Terraform fmt') {
-                //     sh 'terraform fmt'
-                // }
-                // stage('Terraform plan') {
-                //     sh 'terraform plan -out=tfplan -input=false'
-                // }
-                // stage('Terraform apply') {
-                //     sh 'terraform apply -input=false tfplan'
-                // }
+                stage('Terraform init') {
+                    sh 'terraform init -input=false'
+                }
+                stage('Terraform validate') {
+                    sh 'terraform validate'
+                }
+                stage('Terraform fmt') {
+                    sh 'terraform fmt'
+                }
+                stage('Terraform plan') {
+                    sh 'terraform plan -out=tfplan -input=false'
+                }
+                stage('Terraform apply') {
+                    if (env.terraform_action == "create") {
+                        sh 'terraform apply -input=false tfplan'
+                    } else {
+                        echo "Skip Apply due to not match."
+                    }
+                }
+                stage('Terraform destroy') {
+                    if (env.terraform_action == "remove") {
+                        sh 'terraform destroy -auto-approve'
+                    } else {
+                        echo "Skip Destroy due to not match."
+                    }
+                }
                 stage('Notify') {
-                slackSend channel: "${notify_channel}", color: "warning", message: "Felicia-EKS is reaaady.. (<${env.BUILD_URL}|see details>)"
+                slackSend channel: "${notify_channel}", color: "good", message: "Felicia-EKS is reaaady.. (<${env.BUILD_URL}|see details>)"
                 }
             }
         }
