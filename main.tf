@@ -1,17 +1,17 @@
 module "vpc" {
-  source     = "git::git@github.com:felicia-lim/terraform-demo-vg.git//vpc?ref=main"
+  source     = "github.com/felicia-lim/terraform-demo-vg//vpc?ref=main"
   cidr_block = "172.31.212.0/22"
 }
 
 module "subnets" {
-  source              = "git::git@github.com:felicia-lim/terraform-demo-vg.git//subnet?ref=main"
+  source              = "github.com/felicia-lim/terraform-demo-vg//subnet?ref=main"
   vpc_id              = module.vpc.vpc_id
   igw_id              = module.vpc.igw_id
   nat_gateway_enabled = false
 }
 
 module "network_loadbalancer" {
-  source                         = "git::git@github.com:Greg215/terraform-demo-vg.git//nlb?ref=main"
+  source                         = "github.com/Greg215/terraform-demo-vg//nlb?ref=main"
   name                           = "felicia-nlb-eks"
   aws_region                     = "ap-southeast-1"
   vpc_id                         = module.vpc.vpc_id
@@ -49,7 +49,7 @@ module "network_loadbalancer" {
 }
 
 module "eks_cluster" {
-  source                     = "git::git@github.com:Greg215/terraform-demo-vg.git//eks-cluster?ref=main"
+  source                     = "github.com/Greg215/terraform-demo-vg//eks-cluster?ref=main"
   name                       = "fel-eks-cluster"
   vpc_id                     = module.vpc.vpc_id
   subnet_ids                 = module.subnets.public_subnet_ids
@@ -60,7 +60,7 @@ module "eks_cluster" {
 }
 
 module "eks_workers" {
-  source                                 = "git::git@github.com:Greg215/terraform-demo-vg.git//eks-worker?ref=main"
+  source                                 = "github.com/Greg215/terraform-demo-vg//eks-worker?ref=main"
   name                                   = module.eks_cluster.eks_cluster_id
   key_name                               = var.key_name
   image_id                               = var.image_id
@@ -82,7 +82,7 @@ module "eks_workers" {
 }
 
 module "route53" {
-  source  = "git::git@github.com:Greg215/terraform-demo-vg.git//route53-records?ref=main"
+  source  = "github.com/Greg215/terraform-demo-vg//route53-records?ref=main"
   zone_id = "Z07374591FC76OBQXEXUL"
   type    = "CNAME"
   records = [
