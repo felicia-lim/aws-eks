@@ -33,6 +33,9 @@ podTemplate(label: label, containers: [
                 stage('Terraform apply') {
                     sh 'terraform apply -input=false tfplan'
                 }
+                stage('Notify') {
+                slackSend channel: "${notify_channel}", color: "warning", message: "Felicia-EKS is reaaady.. (<${env.BUILD_URL}|see details>)"
+                }
             }
         }
     }
