@@ -11,7 +11,7 @@ podTemplate(label: label, containers: [
 ]) {
     node(label) {
         stage('Notify') {
-                slackSend channel: "${notify_channel}", color: "warning", message: "Felicia-EKS cluster updating. (<${env.BUILD_URL}|see details>)"
-            }
+                slackSend channel: "${notify_channel}", color: "warning", message: "Felicia-EKS cluster updating.. (<${env.BUILD_URL}|see details>)"
+        }
     }
 }
