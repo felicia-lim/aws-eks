@@ -13,7 +13,7 @@ podTemplate(label: label, containers: [
         stage('Notify') {
                 slackSend channel: "${notify_channel}", color: "warning", message: "Felicia-EKS cluster updating.. (<${env.BUILD_URL}|see details>)"
         }
-        withAWS(credentials: 'Felicia-AWS-Credentials', region: 'ap-southeast-1') {
+        withAWS(credentials: 'ritz-aws-credentials', region: 'ap-southeast-1') {
             container('jenkins-agent'){
                 stage('Checkout') {
                     checkout scm
