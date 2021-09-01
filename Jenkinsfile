@@ -13,5 +13,24 @@ podTemplate(label: label, containers: [
         stage('Notify') {
                 slackSend channel: "${notify_channel}", color: "warning", message: "Felicia-EKS cluster updating.. (<${env.BUILD_URL}|see details>)"
         }
+        withAWS(credentials: 'Felicia-AWS-Credentials', region: 'ap-southeast-1') {
+            container('jenkins-agent'){
+                stage('Checkout') {
+                    checkout scm
+                }
+                stage('Terraform init') {
+                    sh 'terraform init -input=false'
+                }
+                stage('Terraform validate') {
+                    sh 'terraform validate'
+                }
+                stage('Terraform fmt') {
+                    sh 'terraform fmt'
+                }
+                stage('Terraform plan') {
+                    sh 'terraform plan -out=tfplan -input=false'
+                }
+            }
+        }
     }
 }
