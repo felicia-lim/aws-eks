@@ -3,7 +3,8 @@ env.terraform_version = "0.12.31"
 def label = "jenkins-vg-agent"
 def notify_channel = "#jenkins-notify"
 properties([parameters([
-        choice(choices: ["create", "remove"].join("\n"), description: "Create or remove cluster", name: "terraform_action")
+        choice(choices: ["create", "remove"].join("\n"), description: "Create or remove cluster", name: "terraform_action"),
+        pipelineTriggers([cron('00 00 * * *')])
 ])])
 
 podTemplate(label: label, containers: [
