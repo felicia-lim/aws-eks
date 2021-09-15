@@ -31,5 +31,6 @@ orbs:
 
 
   workflows:
+    terraform_create_eks_cluster:
       jobs:
         - slack_notify
