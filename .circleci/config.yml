@@ -35,10 +35,6 @@ jobs:
       - image: hashicorp/terraform:1.0.5
     steps:
       - checkout
-      - run:
-          name: install curl
-          command: |
-            apk --no-cache add curl
       - terraform/init:
           path: .
       - terraform/validate:
@@ -53,6 +49,10 @@ jobs:
       - image: hashicorp/terraform:1.0.5
     steps:
       - checkout
+      - run:
+          name: install curl
+          command: |
+            apk --no-cache add curl
       - terraform/init:
           path: .
       - terraform/plan:
