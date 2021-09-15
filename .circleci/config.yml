@@ -59,7 +59,24 @@ jobs:
           path: .
       - terraform/apply:
           path: .
-
+          
+  terraform_destroy:
+    machine:
+      image: ubuntu-1604:202007-01
+    steps:
+      - checkout
+      - terraform/install:
+          arch: amd64
+          os: linux
+          terraform_version: 1.0.5
+      - terraform/init:
+          path: .
+      - terraform/plan:
+          path: .
+      - run:
+          name: "Destruction of env"
+          command: |
+            terraform destroy --auto-approve -input=false
 
   slack_notify_action:
     machine:
