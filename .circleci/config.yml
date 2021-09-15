@@ -30,6 +30,6 @@ orbs:
           channel: circleci-notification
 
 
-workflows:
-    jobs:
-      - slack_notify
+  workflows:
+      jobs:
+        - slack_notify
