@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.4.4
 
-  jobs:
+jobs:
   slack_notify:
     machine:
       image: ubuntu-1604:202007-01
@@ -29,8 +29,7 @@ orbs:
           event: always
           channel: circleci-notification
 
-
-  workflows:
-    terraform_create_eks_cluster:
-      jobs:
-        - slack_notify
+workflows:
+  terraform_create_eks_cluster:
+    jobs:
+      - slack_notify
